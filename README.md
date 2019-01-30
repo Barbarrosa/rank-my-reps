@@ -13,7 +13,10 @@ git clone git@github.com:Barbarrosa/rank-my-reps.git
 # Install npx for easy access to NPM/NodeJS binaries
 npm install -g npx
 
-# Install dependencies - run this command in the project directory
+# Switch to the main project folder
+cd rank-my-reps
+
+# Install dependencies
 npx lerna bootstrap
 ```
 
