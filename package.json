@@ -1,0 +1,17 @@
+{
+  "name": "rank-my-reps",
+  "private": true,
+  "license": "AGPLv3",
+  "homepage": "https://rankmyreps.org",
+  "author": {
+    "name": "Timothy Bradley",
+    "email": "fennasnogothrim@gmail.com"
+  },
+  "engines": {
+    "node": ">= 10.0.0"
+  },
+  "description": "Legislation-Based Tool for Ranking Elected U.S. Officials",
+  "devDependencies": {
+    "lerna": "^3.10.7"
+  }
+}
