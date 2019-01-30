@@ -7,13 +7,13 @@
 This project requires [NodeJS](https://nodejs.org/en/). After that's installed, you can setup the project by running the following commands in a terminal.
 
 ```bash
-# Copy this code onto your computer
+# Copy this code repository onto your computer
 git clone git@github.com:Barbarrosa/rank-my-reps.git
 
 # Install npx for easy access to NPM/NodeJS binaries
 npm install -g npx
 
-# Run project directory; installs dependencies
+# Install dependencies - run this command in the project directory
 npx lerna bootstrap
 ```
 
