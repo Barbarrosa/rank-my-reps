@@ -1,0 +1,28 @@
+{
+  "name": "rank-my-reps-infrastructure",
+  "version": "0.0.0",
+  "description": "Infrastructure Deployment for Rank My Reps",
+  "author": "Tim Bradley <fennasnogothrim@gmail.com>",
+  "homepage": "https://rankmyreps.org",
+  "license": "AGPL-3.0-or-later",
+  "main": "lib/index.js",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc --build",
+    "start": "node ./lib/index.js"
+  },
+  "bugs": {
+    "url": "https://github.com/Barbarrosa/rank-my-reps/issues"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.395.0",
+    "dotenv": "^6.2.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/aws-sdk": "^2.7.0",
+    "@types/dotenv": "^6.1.0",
+    "@types/uuid": "^3.4.4",
+    "typescript": "^3.3.1"
+  }
+}

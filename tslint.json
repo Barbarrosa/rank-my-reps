@@ -1,0 +1,9 @@
+{
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "rules": {
+    "interface-name": false,
+    "no-console": false,
+    "no-empty-interface": false,
+    "no-empty": false
+  }
+}

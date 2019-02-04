@@ -1,0 +1,312 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Metadata": {
+        "AWS::CloudFormation::Designer": {
+            "4ba22a26-7aba-4726-af18-2bfd7b16116d": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 260,
+                    "y": 180
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "4b2f9692-78a8-4292-86a7-6f56a95c784f": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 510,
+                    "y": 80
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "b564f08a-0385-46d1-887f-2c66c24af518": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 510,
+                    "y": 190
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "da6e8aa3-cf8f-4ec1-920b-b9328ad188ca": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 350,
+                    "y": 220
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "0be44777-9410-46a3-adde-d8093d8eb088": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 430,
+                    "y": 80
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "9a2ec1fe-e1ec-49c1-b78c-9254e1180cee": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 320,
+                    "y": 90
+                },
+                "z": 0,
+                "embeds": [],
+                "isassociatedwith": [
+                    "4ba22a26-7aba-4726-af18-2bfd7b16116d"
+                ]
+            }
+        }
+    },
+    "Resources": {
+        "StaticAssetBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "BucketEncryption": {
+                    "ServerSideEncryptionConfiguration": [
+                        {
+                            "ServerSideEncryptionByDefault": {
+                                "SSEAlgorithm": "AES256"
+                            }
+                        }
+                    ]
+                },
+                "LoggingConfiguration": {
+                    "DestinationBucketName": {
+                        "Ref": "LogBucket"
+                    },
+                    "LogFilePrefix": "rate-my-reps-static-changes-"
+                },
+                "PublicAccessBlockConfiguration": {
+                    "BlockPublicAcls": true,
+                    "BlockPublicPolicy": true,
+                    "IgnorePublicAcls": true,
+                    "RestrictPublicBuckets": true
+                },
+                "Tags": [
+                    {
+                        "Key": "project",
+                        "Value": "rank-my-reps"
+                    }
+                ],
+                "VersioningConfiguration": {
+                    "Status": "Enabled"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "4ba22a26-7aba-4726-af18-2bfd7b16116d"
+                }
+            }
+        },
+        "SiteDistribution": {
+            "Type": "AWS::CloudFront::Distribution",
+            "Properties": {
+                "Tags": [
+                    {
+                        "Key": "project",
+                        "Value": "rank-my-reps"
+                    }
+                ],
+                "DistributionConfig": {
+                    "Enabled": true,
+                    "DefaultRootObject": "index.html",
+                    "Aliases": [
+                        "rankmyreps.org",
+                        "*.rankmyreps.org",
+                        "rankmyreps.com",
+                        "*.rankmyreps.com"
+                    ],
+                    "IPV6Enabled": true,
+                    "DefaultCacheBehavior": {
+                        "AllowedMethods": [
+                            "HEAD",
+                            "GET",
+                            "OPTIONS"
+                        ],
+                        "CachedMethods": [
+                            "HEAD",
+                            "GET"
+                        ],
+                        "Compress": true,
+                        "DefaultTTL": 86400,
+                        "ForwardedValues": {
+                            "QueryString": true
+                        },
+                        "LambdaFunctionAssociations": [],
+                        "TargetOriginId": "RankMyRepsStaticOrigin",
+                        "ViewerProtocolPolicy": "redirect-to-https"
+                    },
+                    "Origins": [
+                        {
+                            "Id": "RankMyRepsStaticOrigin",
+                            "DomainName": {
+                                "Fn::GetAtt": [
+                                    "StaticAssetBucket",
+                                    "DomainName"
+                                ]
+                            },
+                            "S3OriginConfig": {
+                                "OriginAccessIdentity": {
+                                    "Fn::Sub": [
+                                        "origin-access-identity/cloudfront/${SiteOriginAccessIdentity}",
+                                        {
+                                            "SiteOriginAccessIdentity": {
+                                                "Ref": "SiteOriginAccessIdentity"
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    ],
+                    "PriceClass": "PriceClass_100",
+                    "Restrictions": {
+                        "GeoRestriction": {
+                            "RestrictionType": "whitelist",
+                            "Locations": [
+                                "US",
+                                "UM"
+                            ]
+                        }
+                    },
+                    "Logging": {
+                        "Bucket": {
+                            "Fn::GetAtt": [
+                                "LogBucket",
+                                "DomainName"
+                            ]
+                        },
+                        "IncludeCookies": false,
+                        "Prefix": "rank-my-reps-logs-"
+                    },
+                    "ViewerCertificate": {
+                        "AcmCertificateArn": {
+                            "Ref": "SiteCert"
+                        },
+                        "SslSupportMethod": "sni-only"
+                    }
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "b564f08a-0385-46d1-887f-2c66c24af518"
+                }
+            },
+            "DependsOn": [
+                "SiteCert"
+            ]
+        },
+        "SiteCert": {
+            "Type": "AWS::CertificateManager::Certificate",
+            "Properties": {
+                "DomainName": "rankmyreps.org",
+                "SubjectAlternativeNames": [
+                    "*.rankmyreps.org",
+                    "rankmyreps.com",
+                    "*.rankmyreps.com"
+                ],
+                "Tags": [
+                    {
+                        "Key": "project",
+                        "Value": "rank-my-reps"
+                    }
+                ],
+                "ValidationMethod": "DNS"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "4b2f9692-78a8-4292-86a7-6f56a95c784f"
+                }
+            }
+        },
+        "LogBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "AccessControl": "LogDeliveryWrite"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "da6e8aa3-cf8f-4ec1-920b-b9328ad188ca"
+                }
+            }
+        },
+        "SiteOriginAccessIdentity": {
+            "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+            "Properties": {
+                "CloudFrontOriginAccessIdentityConfig": {
+                    "Comment": "Rank My Reps OAI"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "0be44777-9410-46a3-adde-d8093d8eb088"
+                }
+            }
+        },
+        "StaticAccessBucketPolicy": {
+            "Type": "AWS::S3::BucketPolicy",
+            "Properties": {
+                "PolicyDocument": {
+                    "Statement": [
+                        {
+                            "Action": [
+                                "s3:GetObject"
+                            ],
+                            "Effect": "Allow",
+                            "Resource": {
+                                "Fn::Join": [
+                                    "",
+                                    [
+                                        "arn:aws:s3:::",
+                                        {
+                                            "Ref": "StaticAssetBucket"
+                                        },
+                                        "/*"
+                                    ]
+                                ]
+                            },
+                            "Principal": {
+                                "CanonicalUser": {
+                                    "Fn::GetAtt": [
+                                        "SiteOriginAccessIdentity",
+                                        "S3CanonicalUserId"
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                },
+                "Bucket": {
+                    "Ref": "StaticAssetBucket"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "9a2ec1fe-e1ec-49c1-b78c-9254e1180cee"
+                }
+            }
+        }
+    }
+}
