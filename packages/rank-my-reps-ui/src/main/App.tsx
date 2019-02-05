@@ -18,7 +18,9 @@ import ScorecardRoute, {
 } from "../routes/ScorecardRoute";
 
 import agplv3Logo from "../assets/agplv3-with-text-100x42.png";
+import ApiKeyRequest from "../components/ApiKeyRequest";
 import { CookieWidget, PrivacyWidget } from "../components/PolicyWidgets";
+import { setApiKeyRequestMethod } from "../fn/api";
 
 const muiTheme = createMuiTheme({
   typography: {
@@ -169,7 +171,27 @@ function Main(): JSX.Element {
   );
 }
 
+let apiKeyResolve;
+let triggerApiRequest;
+const apiKeyPromise = new Promise<string>(res => {
+  apiKeyResolve = res;
+});
+
+setApiKeyRequestMethod(async () => {
+  triggerApiRequest();
+  return apiKeyPromise;
+});
+
 function App(): JSX.Element {
+  const [askApiKey, setAskApiKey] = React.useState(false);
+  triggerApiRequest = () => {
+    setAskApiKey(true);
+  };
+  const registerKey = async getKey => {
+    const key = await getKey();
+    apiKeyResolve(key);
+    setAskApiKey(false);
+  };
   return (
     <div>
       <Header />
@@ -184,6 +206,7 @@ function App(): JSX.Element {
       </div>
       <PrivacyWidget />
       <CookieWidget />
+      <ApiKeyRequest open={askApiKey} registerApiKeyCb={registerKey} />
     </div>
   );
 }
