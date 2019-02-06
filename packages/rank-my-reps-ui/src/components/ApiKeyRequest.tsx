@@ -8,38 +8,49 @@ import {
   TextField
 } from "@material-ui/core";
 import * as React from "react";
+import { setApiKeyRequestMethod } from "../fn/api";
 
-interface Props {
-  open: boolean;
-  registerApiKeyCb: (fn: () => Promise<string>) => void;
-}
+let apiKeyProvideResolve: (key: string) => void;
+const apiKeyPromise = new Promise<string>(res => {
+  apiKeyProvideResolve = res;
+});
 
-export default function ApiKeyRequest({
-  open,
-  registerApiKeyCb
-}: Props): JSX.Element {
-  let resolve: (key: string) => any;
-  let reject: (err: Error) => any;
-  const apiKeySubmitted = new Promise<string>((res, rej) => {
-    resolve = res;
-    reject = rej;
-  });
+let apiKeyRequestTrigger: () => void;
+const apiKeyRequestPromise = new Promise(res => {
+  apiKeyRequestTrigger = res;
+});
 
+setApiKeyRequestMethod(() => {
+  apiKeyRequestTrigger();
+  return apiKeyPromise;
+});
+
+export default function ApiKeyRequest(): JSX.Element {
   const [apiKey, setApiKey] = React.useState("");
-  const handleClose = () => {
-    reject(new Error("API key not provided"));
-  };
+  const [open, setOpen] = React.useState(false);
+
   const saveToSession = () => {
-    resolve(apiKey);
+    apiKeyProvideResolve(apiKey);
+    setOpen(false);
   };
+
   const updateApiKey = (e: React.ChangeEvent<HTMLInputElement>) => {
     setApiKey(e.target.value);
   };
-  registerApiKeyCb(async () => apiKeySubmitted);
+
+  React.useEffect(() => {
+    (async () => {
+      await apiKeyRequestPromise;
+      if (!open && apiKey === "") {
+        setOpen(true);
+      }
+    })();
+  });
+
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
+      disableEscapeKeyDown={true}
       aria-labelledby="form-dialog-title"
     >
       <DialogTitle id="form-dialog-title">ProPublica API Key</DialogTitle>
@@ -66,9 +77,6 @@ export default function ApiKeyRequest({
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
-          Cancel
-        </Button>
         <Button onClick={saveToSession} color="primary">
           Save to Session
         </Button>

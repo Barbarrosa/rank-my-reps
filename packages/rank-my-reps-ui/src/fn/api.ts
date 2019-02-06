@@ -17,21 +17,24 @@ import { CongressMember } from "./CongressMember";
 import { isArrayOfType } from "./isArrayOfType";
 import RollCallVote from "./RollCallVote";
 
+let apiKeyResolve: (key: string) => void;
 let apiKeyRequestMethod: () => Promise<string>;
+const apiKeyRequestPromise = new Promise<string>(resolve => {
+  apiKeyResolve = resolve;
+});
 export function setApiKeyRequestMethod(fn: () => Promise<string>) {
   apiKeyRequestMethod = fn;
 }
 
 async function getPropublicaKey(): Promise<string> {
   const apiKey: undefined | string = process.env.REACT_APP_PROPUBLICA_API_KEY;
-  if (apiKey === undefined || apiKey.length < 1) {
-    if (apiKeyRequestMethod) {
-      return apiKeyRequestMethod();
-    } else {
-      throw new Error("Empty/invalid API key");
-    }
+  if (apiKey && apiKey.length > 0) {
+    apiKeyResolve(apiKey);
+  } else if (apiKeyRequestMethod) {
+    apiKeyResolve(await apiKeyRequestMethod());
   }
-  return apiKey;
+
+  return await apiKeyRequestPromise;
 }
 
 async function getAxiosInstance(
