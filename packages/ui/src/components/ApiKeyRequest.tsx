@@ -20,9 +20,18 @@ const apiKeyRequestPromise = new Promise(res => {
   apiKeyRequestTrigger = res;
 });
 
-setApiKeyRequestMethod(() => {
+const API_KEY_STORAGE_KEY = "ProPublicaApiKey";
+
+setApiKeyRequestMethod(async () => {
+  const sessionStorage = window.sessionStorage;
+  const key = sessionStorage.getItem(API_KEY_STORAGE_KEY);
+  if (key) {
+    return key;
+  }
   apiKeyRequestTrigger();
-  return apiKeyPromise;
+  const result = await apiKeyPromise;
+  window.sessionStorage.setItem(API_KEY_STORAGE_KEY, result);
+  return result;
 });
 
 export default function ApiKeyRequest(): JSX.Element {
