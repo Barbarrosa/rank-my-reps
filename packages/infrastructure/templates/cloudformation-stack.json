@@ -355,7 +355,9 @@
     },
     "Outputs": {
         "RankMyRepsSiteBucket": {
-            "Ref": "StaticAssetBucket"
+            "Value": {
+                "Ref": "StaticAssetBucket"
+            }
         }
     }
 }

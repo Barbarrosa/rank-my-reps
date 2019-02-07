@@ -14,7 +14,6 @@ const cloudFormation = new AWS.CloudFormation({
 });
 
 export default async function createInfrastructure() {
-  console.log(`Fetching stack info...`);
   const stackConf: CreateStackInput | UpdateStackInput = {
     StackName: process.env.STACK_NAME || "RankMyReps",
     Tags: [
@@ -27,6 +26,8 @@ export default async function createInfrastructure() {
       .readFileSync(`${__dirname}/../templates/cloudformation-stack.json`)
       .toString()
   };
+
+  console.log(`Fetching stack info...`);
 
   const stacks =
     (await cloudFormation.listStacks().promise()).StackSummaries || [];
@@ -47,6 +48,22 @@ export default async function createInfrastructure() {
     console.log(`Old stack deleted.`);
     previousStack = undefined;
   }
+
+  console.log(`Waiting for in-progress updates to complete...`);
+  while (true) {
+    const stacks = await cloudFormation
+      .describeStacks({ StackName: stackConf.StackName })
+      .promise();
+    if (stacks && stacks.Stacks && stacks.Stacks[0]) {
+      const status = stacks.Stacks[0].StackStatus;
+      console.log("Status: ", status);
+      if (status.indexOf("PROGRESS") === -1) {
+        break;
+      }
+    }
+    await new Promise(done => setTimeout(done, 5000));
+  }
+  console.log("Done waiting for in-progress updates.");
 
   try {
     if (previousStack) {
