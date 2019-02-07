@@ -134,18 +134,6 @@
                     },
                     "LogFilePrefix": "rate-my-reps-static-changes-"
                 },
-                "PublicAccessBlockConfiguration": {
-                    "BlockPublicAcls": true,
-                    "BlockPublicPolicy": true,
-                    "IgnorePublicAcls": true,
-                    "RestrictPublicBuckets": true
-                },
-                "Tags": [
-                    {
-                        "Key": "project",
-                        "Value": "rank-my-reps"
-                    }
-                ],
                 "VersioningConfiguration": {
                     "Status": "Enabled"
                 }
@@ -159,12 +147,6 @@
         "SiteDistribution": {
             "Type": "AWS::CloudFront::Distribution",
             "Properties": {
-                "Tags": [
-                    {
-                        "Key": "project",
-                        "Value": "rank-my-reps"
-                    }
-                ],
                 "DistributionConfig": {
                     "Enabled": true,
                     "DefaultRootObject": "index.html",
@@ -262,12 +244,6 @@
                     "*.rankmyreps.org",
                     "rankmyreps.com",
                     "*.rankmyreps.com"
-                ],
-                "Tags": [
-                    {
-                        "Key": "project",
-                        "Value": "rank-my-reps"
-                    }
                 ],
                 "ValidationMethod": "DNS"
             },
