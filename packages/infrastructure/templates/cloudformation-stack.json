@@ -89,18 +89,6 @@
                 "z": 1,
                 "embeds": []
             },
-            "d1af957d-b9d2-48ae-98a6-d21e79c0d058": {
-                "size": {
-                    "width": 60,
-                    "height": 60
-                },
-                "position": {
-                    "x": 60,
-                    "y": 90
-                },
-                "z": 1,
-                "embeds": []
-            },
             "774c6dcc-4e20-40d1-a2cd-40ec4602d86e": {
                 "size": {
                     "width": 60,
@@ -346,8 +334,8 @@
             "Type": "AWS::Route53::RecordSet",
             "Properties": {
                 "Type": "A",
-                "Name": "rankmyreps.org.",
-                "HostedZoneName": "rankmyreps.org.",
+                "Name": "rankmyreps.com.",
+                "HostedZoneName": "rankmyreps.com.",
                 "AliasTarget": {
                     "DNSName": {
                         "Fn::GetAtt": [
@@ -363,6 +351,11 @@
                     "id": "774c6dcc-4e20-40d1-a2cd-40ec4602d86e"
                 }
             }
+        }
+    },
+    "Outputs": {
+        "RankMyRepsSiteBucket": {
+            "Ref": "StaticAssetBucket"
         }
     }
 }
