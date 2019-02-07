@@ -8,10 +8,10 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 260,
+                    "x": 270,
                     "y": 180
                 },
-                "z": 0,
+                "z": 1,
                 "embeds": []
             },
             "4b2f9692-78a8-4292-86a7-6f56a95c784f": {
@@ -21,9 +21,9 @@
                 },
                 "position": {
                     "x": 510,
-                    "y": 80
+                    "y": 90
                 },
-                "z": 0,
+                "z": 1,
                 "embeds": []
             },
             "b564f08a-0385-46d1-887f-2c66c24af518": {
@@ -33,9 +33,9 @@
                 },
                 "position": {
                     "x": 510,
-                    "y": 190
+                    "y": 180
                 },
-                "z": 0,
+                "z": 1,
                 "embeds": []
             },
             "da6e8aa3-cf8f-4ec1-920b-b9328ad188ca": {
@@ -44,10 +44,10 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 350,
-                    "y": 220
+                    "x": 360,
+                    "y": 210
                 },
-                "z": 0,
+                "z": 1,
                 "embeds": []
             },
             "0be44777-9410-46a3-adde-d8093d8eb088": {
@@ -56,10 +56,10 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 430,
-                    "y": 80
+                    "x": 420,
+                    "y": 90
                 },
-                "z": 0,
+                "z": 1,
                 "embeds": []
             },
             "9a2ec1fe-e1ec-49c1-b78c-9254e1180cee": {
@@ -68,14 +68,50 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 320,
+                    "x": 330,
                     "y": 90
                 },
-                "z": 0,
+                "z": 1,
                 "embeds": [],
                 "isassociatedwith": [
                     "4ba22a26-7aba-4726-af18-2bfd7b16116d"
                 ]
+            },
+            "7627c8f3-2f37-4870-8377-064a9d307650": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 630,
+                    "y": 60
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "d1af957d-b9d2-48ae-98a6-d21e79c0d058": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 60,
+                    "y": 90
+                },
+                "z": 1,
+                "embeds": []
+            },
+            "774c6dcc-4e20-40d1-a2cd-40ec4602d86e": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 630,
+                    "y": 160
+                },
+                "z": 1,
+                "embeds": []
             }
         }
     },
@@ -305,6 +341,50 @@
             "Metadata": {
                 "AWS::CloudFormation::Designer": {
                     "id": "9a2ec1fe-e1ec-49c1-b78c-9254e1180cee"
+                }
+            }
+        },
+        "OrgAlias": {
+            "Type": "AWS::Route53::RecordSet",
+            "Properties": {
+                "Type": "A",
+                "Name": "rankmyreps.org.",
+                "HostedZoneName": "rankmyreps.org.",
+                "AliasTarget": {
+                    "DNSName": {
+                        "Fn::GetAtt": [
+                            "SiteDistribution",
+                            "DomainName"
+                        ]
+                    },
+                    "HostedZoneId": "Z2FDTNDATAQYW2"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "7627c8f3-2f37-4870-8377-064a9d307650"
+                }
+            }
+        },
+        "ComAlias": {
+            "Type": "AWS::Route53::RecordSet",
+            "Properties": {
+                "Type": "A",
+                "Name": "rankmyreps.org.",
+                "HostedZoneName": "rankmyreps.org.",
+                "AliasTarget": {
+                    "DNSName": {
+                        "Fn::GetAtt": [
+                            "SiteDistribution",
+                            "DomainName"
+                        ]
+                    },
+                    "HostedZoneId": "Z2FDTNDATAQYW2"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "774c6dcc-4e20-40d1-a2cd-40ec4602d86e"
                 }
             }
         }
