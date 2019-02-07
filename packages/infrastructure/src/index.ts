@@ -24,7 +24,7 @@ export default async function createInfrastructure() {
       }
     ],
     TemplateBody: fs
-      .readFileSync(`${__dirname}/../templates/cloudfront-rank-my-reps.json`)
+      .readFileSync(`${__dirname}/../templates/cloudformation-stack.json`)
       .toString()
   };
 
@@ -48,22 +48,25 @@ export default async function createInfrastructure() {
     previousStack = undefined;
   }
 
-  if (previousStack) {
-    console.log(`Updating Rank My Reps infrastructure...`);
-    console.log(
-      `Updated Stack ${
-        (await cloudFormation.updateStack(stackConf).promise()).StackId
-      }`
-    );
-  } else {
-    console.log(`Creating Rank My Reps infrastructure...`);
-    console.log(
-      `Created Stack ${
-        (await cloudFormation.createStack(stackConf).promise()).StackId
-      }`
-    );
+  try {
+    if (previousStack) {
+      console.log(`Updating Rank My Reps infrastructure...`);
+      const result = await cloudFormation.updateStack(stackConf).promise();
+      console.log(result);
+      console.log(`Updated Stack ${result.StackId}`);
+    } else {
+      console.log(`Creating Rank My Reps infrastructure...`);
+      console.log(
+        `Created Stack ${
+          (await cloudFormation.createStack(stackConf).promise()).StackId
+        }`
+      );
+    }
+    console.log(`Infrastructure generation complete.`);
+  } catch (e) {
+    console.log(`An error occurred preventing infrastructure generation.`);
+    console.log(e);
   }
-  console.log(`Infrastructure generation complete.`);
 }
 
 createInfrastructure();
