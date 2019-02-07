@@ -1,5 +1,7 @@
 # Rank My Reps
 
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+
 **Rank My Reps** helps you hold elected U.S. officials accountable by bridging the gap between policy and your ballot.
 
 ## Development Setup
@@ -20,13 +22,5 @@ cd rank-my-reps
 npx lerna bootstrap
 ```
 
-## UI Development
-
-The user interface is developed using [Create React App](https://github.com/facebook/create-react-app). You need to configure a [ProPublica API](https://projects.propublica.org/api-docs/congress-api/) key to develop locally. Create a file `.env.local` under [packages/rank-my-reps-ui](packages/rank-my-reps-ui) with the following contents.
-
-```env
-# This file should never be committed
-REACT_APP_PROPUBLICA_API_KEY=<your api key here>
-```
-
-You can start the UI by navigating to `packages/rank-my-reps-ui` and running the command `npm start`.
+- [UI Development](packages/ui/README.md)
+- [Infrastructure Development](packages/infrastructure/README.md)

@@ -1,9 +1,11 @@
 {
   "name": "@rank-my-reps/ui",
+  "homepage": "https://github.com/Barbarrosa/rank-my-reps#readme",
+  "author": "Tim Bradley <fennasnogothrim@gmail.com>",
   "version": "0.0.0",
   "private": true,
   "description": "User interface for Rank My Reps",
-  "license": "AGPLv3",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
     "@material-ui/core": "^3.9.0",

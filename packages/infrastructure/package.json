@@ -4,6 +4,7 @@
   "description": "Infrastructure Deployment for Rank My Reps",
   "author": "Tim Bradley <fennasnogothrim@gmail.com>",
   "homepage": "https://rankmyreps.org",
+  "private": true,
   "license": "AGPL-3.0-or-later",
   "main": "lib/index.js",
   "types": "src/index.ts",

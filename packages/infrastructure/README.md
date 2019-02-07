@@ -1,11 +1,15 @@
 # Rank My Reps - Infrastructure
 
-> TODO: description
+This package provides the deployment code and configuration.
 
 ## Usage
 
-```
-const rankMyRepsInfrastructure = require('rank-my-reps-infrastructure');
+Make sure you use [the appropriate `AWS_PROFILE`](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) when running this application. This will deploy AWS infrastructure to your configured AWS profile/region/etc.
 
-// TODO: DEMONSTRATE API
+```bash
+# Build package
+npm run build
+
+# Deploy to AWS
+npm start
 ```
