@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsc --build",
     "start": "env-cmd .env.production.local node ./bin/run",
-    "sync-ui": "env-cmd .env.production.local bash -c \"aws s3 sync ./node_modules/@rank-my-reps/ui/build/ s3://$STATIC_DEPLOY_URL --delete --grants read=id=$ORIGIN_ACCESS_USER\""
+    "sync-ui": "env-cmd .env.production.local bash -c \"aws s3 sync ./node_modules/@rank-my-reps/ui/build/ s3://$STATIC_DEPLOY_BUCKET --delete --grants read=id=$ORIGIN_ACCESS_USER\""
   },
   "bugs": {
     "url": "https://github.com/Barbarrosa/rank-my-reps/issues"

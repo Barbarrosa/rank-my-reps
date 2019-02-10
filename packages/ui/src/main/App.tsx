@@ -72,7 +72,7 @@ function Header(): JSX.Element {
     <header>
       <AppBar>
         <Toolbar>
-          <Tabs value={tab} variant="scrollable">
+          <Tabs value={tab} variant="scrollable" scrollButtons="auto">
             <NavLink setTab={prepSetTab(0)} to="/" label="Home" />
             <NavLink
               setTab={prepSetTab(1)}
