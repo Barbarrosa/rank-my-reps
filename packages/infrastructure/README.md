@@ -1,5 +1,8 @@
 # Rank My Reps - Infrastructure
 
+[![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+
 This package provides the deployment code and configuration.
 
 ## Usage

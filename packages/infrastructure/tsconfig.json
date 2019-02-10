@@ -3,7 +3,9 @@
   "compilerOptions": {
     "noEmit": false,
     "module": "commonjs",
-    "outDir": "./lib"
+    "outDir": "./lib",
+    "target": "es6",
+    "alwaysStrict": false
   },
   "include": [
     "src"

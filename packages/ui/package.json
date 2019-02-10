@@ -13,6 +13,7 @@
     "@material-ui/styles": "^3.0.0-alpha.8",
     "@types/dotenv": "^6.1.0",
     "axios": "^0.18.0",
+    "cross-env": "^5.2.0",
     "dotenv": "^6.2.0",
     "env-cmd": "^8.0.2",
     "lodash": "^4.17.11",
