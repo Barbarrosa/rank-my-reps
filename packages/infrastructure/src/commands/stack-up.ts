@@ -7,6 +7,13 @@ import Command, { flags } from "@oclif/command";
 
 import stackConfig from "./cloudformation-stack.json";
 
+var log = console.log;
+
+console.log = function(...args) {
+  log.call(console, new Date().toISOString());
+  log.call(console, ...args);
+};
+
 async function createInfrastructure() {
   const cloudFormation = new AWS.CloudFormation({
     apiVersion: "2010-05-15",
@@ -70,11 +77,9 @@ async function createInfrastructure() {
       console.log(`Updated Stack ${result.StackId}`);
     } else {
       console.log(`Creating Rank My Reps infrastructure...`);
-      console.log(
-        `Created Stack ${
-          (await cloudFormation.createStack(stackConf).promise()).StackId
-        }`
-      );
+      const result = await cloudFormation.createStack(stackConf).promise();
+      console.log(result);
+      console.log(`Created Stack ${result.StackId}`);
     }
     console.log(`Infrastructure generation complete.`);
   } catch (e) {

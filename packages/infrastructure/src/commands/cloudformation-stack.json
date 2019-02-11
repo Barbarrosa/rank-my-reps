@@ -20,8 +20,8 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 510,
-                    "y": 90
+                    "x": 630,
+                    "y": 180
                 },
                 "z": 1,
                 "embeds": []
@@ -83,8 +83,8 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 630,
-                    "y": 60
+                    "x": 570,
+                    "y": 250
                 },
                 "z": 1,
                 "embeds": []
@@ -95,11 +95,216 @@
                     "height": 60
                 },
                 "position": {
-                    "x": 630,
-                    "y": 160
+                    "x": 570,
+                    "y": 330
                 },
                 "z": 1,
                 "embeds": []
+            },
+            "f1c0d7d6-deb1-472d-aca4-a2e10588b326": {
+                "size": {
+                    "width": 290,
+                    "height": 310
+                },
+                "position": {
+                    "x": -50,
+                    "y": 90
+                },
+                "z": 1,
+                "embeds": [
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce"
+                ]
+            },
+            "2ae482eb-1348-4882-9004-3c6a0dc07dce": {
+                "size": {
+                    "width": 240,
+                    "height": 230
+                },
+                "position": {
+                    "x": -20,
+                    "y": 130
+                },
+                "z": 2,
+                "parent": "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                "embeds": [
+                    "a3def837-2e53-47bf-9e62-f709ef3acf75",
+                    "573b3981-b2b0-4960-947f-5f4e290144e1"
+                ],
+                "iscontainedinside": [
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326",
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326"
+                ]
+            },
+            "573b3981-b2b0-4960-947f-5f4e290144e1": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 10,
+                    "y": 200
+                },
+                "z": 3,
+                "parent": "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                "embeds": [],
+                "iscontainedinside": [
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326"
+                ],
+                "dependson": [
+                    "a3def837-2e53-47bf-9e62-f709ef3acf75"
+                ]
+            },
+            "a3def837-2e53-47bf-9e62-f709ef3acf75": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 100,
+                    "y": 150
+                },
+                "z": 3,
+                "parent": "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                "embeds": [],
+                "iscontainedinside": [
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce",
+                    "2ae482eb-1348-4882-9004-3c6a0dc07dce"
+                ]
+            },
+            "0ff5ed7a-3a21-4800-9ba2-003cd7187a80": {
+                "source": {
+                    "id": "573b3981-b2b0-4960-947f-5f4e290144e1"
+                },
+                "target": {
+                    "id": "a3def837-2e53-47bf-9e62-f709ef3acf75"
+                },
+                "z": 4
+            },
+            "bf0bfba7-161a-4318-aa89-4d239c92add3": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 480,
+                    "y": 390
+                },
+                "z": 0,
+                "embeds": [],
+                "isassociatedwith": [
+                    "4b2f9692-78a8-4292-86a7-6f56a95c784f"
+                ],
+                "dependson": [
+                    "b564f08a-0385-46d1-887f-2c66c24af518"
+                ]
+            },
+            "6d104e30-9449-4e1e-8c81-a5fdc6a3aeab": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 290,
+                    "y": 390
+                },
+                "z": 0,
+                "embeds": [],
+                "isassociatedwith": [
+                    "bf0bfba7-161a-4318-aa89-4d239c92add3"
+                ],
+                "iscontainedinside": [
+                    "f1c0d7d6-deb1-472d-aca4-a2e10588b326"
+                ]
+            },
+            "8a1dc58c-0d90-410d-9cd5-f9ce39141551": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 390,
+                    "y": 310
+                },
+                "z": 0,
+                "embeds": []
+            },
+            "83988837-3088-4ffd-9bf0-4be62fcb099e": {
+                "source": {
+                    "id": "bf0bfba7-161a-4318-aa89-4d239c92add3"
+                },
+                "target": {
+                    "id": "b564f08a-0385-46d1-887f-2c66c24af518"
+                },
+                "z": 11
             }
         }
     },
@@ -140,9 +345,7 @@
                     "DefaultRootObject": "index.html",
                     "Aliases": [
                         "rankmyreps.org",
-                        "*.rankmyreps.org",
-                        "rankmyreps.com",
-                        "*.rankmyreps.com"
+                        "rankmyreps.com"
                     ],
                     "IPV6Enabled": true,
                     "DefaultCacheBehavior": {
@@ -351,9 +554,184 @@
                     "id": "774c6dcc-4e20-40d1-a2cd-40ec4602d86e"
                 }
             }
+        },
+        "ProPublicaRestApiForward": {
+            "Type": "AWS::ApiGateway::RestApi",
+            "Properties": {
+                "Name": "ProPublicaApiForward",
+                "EndpointConfiguration": {
+                    "Types": [
+                        "EDGE"
+                    ]
+                },
+                "MinimumCompressionSize": 0,
+                "Policy": {
+                    "Statement": [
+                        {
+                            "Action": [
+                                "execute-api:Invoke",
+                                "execute-api:InvalidateCache"
+                            ],
+                            "Effect": "Allow",
+                            "Resource": [
+                                "execute-api:/prod/GET/*"
+                            ],
+                            "Principal": {
+                                "Service": "apigateway.amazonaws.com"
+                            }
+                        }
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "f1c0d7d6-deb1-472d-aca4-a2e10588b326"
+                }
+            }
+        },
+        "ProPublicaApiResource": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+                "RestApiId": {
+                    "Ref": "ProPublicaRestApiForward"
+                },
+                "ParentId": {
+                    "Fn::GetAtt": [
+                        "ProPublicaRestApiForward",
+                        "RootResourceId"
+                    ]
+                },
+                "PathPart": "{proxy+}"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "2ae482eb-1348-4882-9004-3c6a0dc07dce"
+                }
+            }
+        },
+        "ProPublicaProxyProd": {
+            "Type": "AWS::ApiGateway::Deployment",
+            "Properties": {
+                "RestApiId": {
+                    "Ref": "ProPublicaRestApiForward"
+                },
+                "StageName": "prod",
+                "StageDescription": {
+                    "Description": "Production deployment of ProPublica API forwarding"
+                },
+                "Description": "Rank My Reps API forwarding"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "573b3981-b2b0-4960-947f-5f4e290144e1"
+                }
+            },
+            "DependsOn": [
+                "ProPublicaProxyMethod"
+            ]
+        },
+        "ProPublicaProxyMethod": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+                "RestApiId": {
+                    "Ref": "ProPublicaRestApiForward"
+                },
+                "ResourceId": {
+                    "Ref": "ProPublicaApiResource"
+                },
+                "AuthorizationType": "NONE",
+                "HttpMethod": "ANY",
+                "RequestParameters": {
+                    "method.request.path.proxy": true
+                },
+                "Integration": {
+                    "Type": "HTTP_PROXY",
+                    "IntegrationHttpMethod": "ANY",
+                    "Uri": "https://api.propublica.org/{proxy}",
+                    "ContentHandling": "CONVERT_TO_TEXT",
+                    "RequestParameters": {
+                        "integration.request.path.proxy": "method.request.path.proxy",
+                        "integration.request.header.X-API-Key": "'{{resolve:secretsmanager:rankmyreps/prod/propublica-api-key:SecretString:propublica-api-key}}'"
+                    }
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "a3def837-2e53-47bf-9e62-f709ef3acf75"
+                }
+            }
+        },
+        "ProPublicaProxyDomain": {
+            "Type": "AWS::ApiGateway::DomainName",
+            "Properties": {
+                "CertificateArn": {
+                    "Ref": "SiteCert"
+                },
+                "DomainName": "api.rankmyreps.org",
+                "EndpointConfiguration": {
+                    "Types": [
+                        "EDGE"
+                    ]
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "bf0bfba7-161a-4318-aa89-4d239c92add3"
+                }
+            },
+            "DependsOn": [
+                "SiteDistribution"
+            ]
+        },
+        "ProPublicaApiMapping": {
+            "Type": "AWS::ApiGateway::BasePathMapping",
+            "Properties": {
+                "DomainName": {
+                    "Ref": "ProPublicaProxyDomain"
+                },
+                "RestApiId": {
+                    "Ref": "ProPublicaRestApiForward"
+                },
+                "Stage": "prod"
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "6d104e30-9449-4e1e-8c81-a5fdc6a3aeab"
+                }
+            }
+        },
+        "ProPublicaProxyAlias": {
+            "Type": "AWS::Route53::RecordSet",
+            "Properties": {
+                "Type": "A",
+                "Name": "api.rankmyreps.org.",
+                "HostedZoneName": "rankmyreps.org.",
+                "AliasTarget": {
+                    "DNSName": {
+                        "Fn::GetAtt": [
+                            "ProPublicaProxyDomain",
+                            "DistributionDomainName"
+                        ]
+                    },
+                    "HostedZoneId": "Z2FDTNDATAQYW2"
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "8a1dc58c-0d90-410d-9cd5-f9ce39141551"
+                }
+            }
         }
     },
     "Outputs": {
+        "SiteOriginAccessIdentity": {
+            "Value": {
+                "Fn::GetAtt": [
+                    "SiteOriginAccessIdentity",
+                    "S3CanonicalUserId"
+                ]
+            }
+        },
         "RankMyRepsSiteBucket": {
             "Value": {
                 "Ref": "StaticAssetBucket"
