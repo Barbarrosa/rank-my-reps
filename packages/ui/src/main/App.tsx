@@ -19,8 +19,8 @@ import ScorecardRoute, {
 
 import agplv3Logo from "../assets/agplv3-with-text-100x42.png";
 import ApiKeyRequest from "../components/ApiKeyRequest";
-import { CookieWidget, PrivacyWidget } from "../components/PolicyWidgets";
 import GoogleAnalytics from "../components/GoogleAnalytics";
+import { CookieWidget, PrivacyWidget } from "../components/PolicyWidgets";
 
 const muiTheme = createMuiTheme({
   typography: {

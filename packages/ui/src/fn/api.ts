@@ -6,7 +6,6 @@ import {
   CongressApiBillResult,
   CongressApiMemberResult,
   CongressApiResponse,
-  CongressApiRollCallVoteResult,
   isCongressApiBillResult,
   isCongressApiMemberResult,
   isCongressApiResponse,
@@ -40,13 +39,20 @@ async function getPropublicaKey(): Promise<string> {
 async function getAxiosInstance(
   overrides: AxiosRequestConfig = {}
 ): Promise<AxiosInstance> {
+  const baseURL: undefined | string = process.env.REACT_APP_PRIMARY_API_URL;
   const conf = merge(
-    {
-      baseURL: "https://api.propublica.org/congress/v1",
-      headers: {
-        "X-API-Key": await getPropublicaKey()
-      }
-    },
+    baseURL
+      ? {
+          // Use main API URL if available
+          baseURL
+        }
+      : {
+          // Otherwise fallback to requesting directly fron the ProPublica API
+          baseURL: "https://api.propublica.org/congress/v1",
+          headers: {
+            "X-API-Key": await getPropublicaKey()
+          }
+        },
     overrides
   );
 
