@@ -569,7 +569,6 @@
                     "Statement": [
                         {
                             "Action": [
-                                "execute-api:Invoke",
                                 "execute-api:InvalidateCache"
                             ],
                             "Effect": "Allow",
@@ -579,6 +578,16 @@
                             "Principal": {
                                 "Service": "apigateway.amazonaws.com"
                             }
+                        },
+                        {
+                            "Action": [
+                                "execute-api:Invoke"
+                            ],
+                            "Effect": "Allow",
+                            "Resource": [
+                                "execute-api:/prod/GET/*"
+                            ],
+                            "Principal": "*"
                         }
                     ]
                 }
