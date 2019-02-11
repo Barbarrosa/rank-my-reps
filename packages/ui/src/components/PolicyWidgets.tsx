@@ -1,18 +1,21 @@
 import * as React from "react";
 
 const loadPolicyLib = (() => {
-  let policyLoaded: boolean = false;
+  let loaded: boolean = false;
   return () => {
-    if (policyLoaded) {
+    if (loaded) {
       return;
     }
     React.useEffect(() => {
+      if (loaded) {
+        return;
+      }
       const doc = window.document;
       const script = doc.createElement("script");
       script.async = true;
       script.src = "https://cdn.iubenda.com/iubenda.js";
       doc.body.appendChild(script);
-      policyLoaded = true;
+      loaded = true;
     }, [true]);
   };
 })();
