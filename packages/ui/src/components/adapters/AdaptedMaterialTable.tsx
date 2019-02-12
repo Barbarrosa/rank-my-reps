@@ -20,7 +20,27 @@ type AdaptedMaterialTable = React.ComponentType<
   Optional<Replace<MaterialTableProps, "data", any[]>, "data">
 >;
 
+const getFilterFn = (fieldName: string) => {
+  const nameParts = fieldName.split(".");
+  return (filter: any, data: object) => {
+    // Empty filters always return this object
+    if (filter === "" || filter === null || filter === undefined) {
+      return true;
+    }
+    // Navigate into object hierarchy
+    for (const part of nameParts) {
+      data = data[part];
+      if (data === undefined || data === null) {
+        // Return false if part of the heirarchy is missing
+        return false;
+      }
+    }
+    return data && ("" + data).includes(filter);
+  };
+};
+
 const IconMaterialTable = (props: MaterialTableProps) => {
+  // Configure icons
   const icons: Icons = Object.entries({
     Check,
     DetailPanel,
@@ -34,9 +54,27 @@ const IconMaterialTable = (props: MaterialTableProps) => {
     ThirdStateCheck,
     ViewColumn
   }).reduce((a, [key, Value]) => ((a[key] = () => <Value />), a), {}) as Icons;
+
+  // Make nested fields searchable
+  const columns: typeof props.columns = [];
+  for (const col of props.columns) {
+    if (col.field && col.field.includes(".") && !col.customFilterAndSearch) {
+      columns.push({ ...col, customFilterAndSearch: getFilterFn(col.field) });
+    } else {
+      columns.push(col);
+    }
+  }
+
+  const newProps = { ...props, columns };
+
   return (
     <React.Fragment>
-      <MaterialTable icons={icons} data={[]} {...props} />
+      <MaterialTable
+        icons={icons}
+        data={[]}
+        options={{ filtering: true, search: false }}
+        {...newProps}
+      />
       <div>
         <p>
           <a href="https://www.propublica.org/" target="_blank">
