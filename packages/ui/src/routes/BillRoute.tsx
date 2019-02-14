@@ -3,19 +3,15 @@ import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
 import { Route, RouteProps } from "react-router";
 import LeftJoin from "ts-left-join";
-import AdaptedMaterialTable from "../components/adapters/AdaptedMaterialTable";
-import { Bill } from "../fn/Bill";
-import CongressChamber from "../fn/CongressChamber";
-import { Score, updateScore } from "../fn/scorecard";
+import DocumentRenderer from "../components/DocumentRenderer";
+import ProPublicaDataTable from "../components/tables/ProPublicaDataTable";
+import { updateScore } from "../fn/scorecard";
+import ScoredBill from "../fn/ScoredBill";
 import { getUserId } from "../fn/User";
 import getBillState from "../state/BillState";
 import getScoreState from "../state/ScoreState";
 
 export const TITLE = "Recent Bills";
-interface ScoredBill {
-  bill: Bill;
-  score?: Score & { vote: string };
-}
 
 const getUpdateRowScoreFn = (
   row: ScoredBill,
@@ -57,10 +53,22 @@ const getRouteComponent = ({ match }) => {
   }, [bills, scores]);
 
   return (
-    <AdaptedMaterialTable
+    <ProPublicaDataTable
       title={TITLE}
       isLoading={billsLoading || scoresLoading}
       data={joined}
+      detailPanel={[
+        {
+          render: (row: ScoredBill) => {
+            return (
+              <DocumentRenderer
+                title={row.bill.title}
+                uri={row.bill.gpo_pdf_uri}
+              />
+            );
+          }
+        }
+      ]}
       columns={[
         {
           field: "bill.number",

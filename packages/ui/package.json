@@ -11,6 +11,7 @@
     "@material-ui/core": "^3.9.0",
     "@material-ui/icons": "^3.0.2",
     "@material-ui/styles": "^3.0.0-alpha.8",
+    "@rescripts/cli": "^0.0.10",
     "@types/dotenv": "^6.1.0",
     "axios": "^0.18.0",
     "cross-env": "^5.2.0",
@@ -22,24 +23,28 @@
     "react": "^16.8.0-alpha.1",
     "react-dom": "^16.8.0-alpha.1",
     "react-json-to-table": "^0.1.3",
+    "react-pdf": "^4.0.2",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.3",
     "ts-left-join": "^2.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "rescripts start",
+    "start:prod": "serve -s build",
+    "build": "rescripts build",
     "build:prod": "env-cmd .env.production npm run build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "test": "rescripts test --env=jsdom",
+    "eject": "rescripts eject"
   },
   "devDependencies": {
+    "@rescripts/cli": "^0.0.10",
     "@types/jest": "^23.3.13",
     "@types/lodash": "^4.14.119",
     "@types/node": "^10.12.18",
     "@types/react": "^16.7.20",
     "@types/react-dom": "^16.0.11",
     "@types/react-router-dom": "^4.3.1",
+    "serve": "^10.1.2",
     "typescript": "^3.2.4",
     "webpack": "^4.28.4",
     "webpack-dev-server": "^3.1.14"
