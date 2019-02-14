@@ -1,7 +1,7 @@
 import { ThumbDown, ThumbUp } from "@material-ui/icons";
 import * as React from "react";
 import { Route, RouteProps } from "react-router";
-import ProPublicaDataTable from "../components/tables/ProPublicaDataTable";
+import AdaptedMaterialTable from "../components/adapters/AdaptedMaterialTable";
 import { Score } from "../fn/scorecard";
 import { getUserId } from "../fn/User";
 import getScoreState from "../state/ScoreState";
@@ -11,7 +11,7 @@ const getRouteComponent = () => {
   const { scores, loading } = getScoreState(getUserId());
 
   return (
-    <ProPublicaDataTable
+    <AdaptedMaterialTable
       title={TITLE}
       data={scores}
       isLoading={loading}

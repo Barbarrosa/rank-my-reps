@@ -1,13 +1,13 @@
 import * as React from "react";
 import { Route, RouteProps } from "react-router";
-import ProPublicaDataTable from "../components/tables/ProPublicaDataTable";
+import AdaptedMaterialTable from "../components/adapters/AdaptedMaterialTable";
 import { BillVote } from "../fn/Bill";
 import { getRollCallVote, getSpecificBill } from "../fn/cachedApi";
 import { Chamber } from "../fn/Chamber";
 import CongressChamber from "../fn/CongressChamber";
 import { CongressMember } from "../fn/CongressMember";
 import RollCallVote, { voteMatchesPosition } from "../fn/RollCallVote";
-import { ScoreCard } from "../fn/scorecard";
+import { Score, ScoreCard } from "../fn/scorecard";
 import { getUserId } from "../fn/User";
 import getMemberState from "../state/MemberState";
 import getScoreState from "../state/ScoreState";
@@ -136,7 +136,7 @@ const getRouteComponent = ({ match }) => {
   }, [loading, scoresLoading, votesLoading, chamber, congress, votes, members]);
 
   return (
-    <ProPublicaDataTable
+    <AdaptedMaterialTable
       title={getMembersTitle(congress, chamber)}
       data={joined}
       isLoading={loading || scoresLoading || votesLoading || joinedLoading}
