@@ -65,7 +65,11 @@ const getRouteComponent = ({ match }) => {
         {
           field: "bill.number",
           render: (row: ScoredBill) => {
-            return <a href={row.bill.congressdotgov_url}>{row.bill.number}</a>;
+            return (
+              <a target="_blank" href={row.bill.congressdotgov_url}>
+                {row.bill.number}
+              </a>
+            );
           },
           title: "#"
         },

@@ -19,7 +19,11 @@ const getRouteComponent = () => {
         {
           field: "bill.number",
           render: (row: Score) => {
-            return <a href={row.bill.congressdotgov_url}>{row.bill.number}</a>;
+            return (
+              <a target="_blank" href={row.bill.congressdotgov_url}>
+                {row.bill.number}
+              </a>
+            );
           },
           title: "#"
         },
