@@ -10,8 +10,8 @@ import { Score, updateScore } from "../fn/scorecard";
 import { getUserId } from "../fn/User";
 import getBillState from "../state/BillState";
 import getScoreState from "../state/ScoreState";
+import Nth from "../util/Nth";
 
-export const TITLE = "Recent Bills";
 interface ScoredBill {
   bill: Bill;
   score?: Score & { vote: string };
@@ -58,7 +58,9 @@ const getRouteComponent = ({ match }) => {
 
   return (
     <AdaptedMaterialTable
-      title={TITLE}
+      title={`Recent Bills - ${Nth(congress)} ${chamber
+        .charAt(0)
+        .toUpperCase()}${chamber.slice(1)}`}
       isLoading={billsLoading || scoresLoading}
       data={joined}
       columns={[
