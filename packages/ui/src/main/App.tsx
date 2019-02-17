@@ -1,16 +1,19 @@
 import * as React from "react";
-import {
-  BrowserRouter,
-  Link,
-  NavLink as OriginalNavLink,
-  Route
-} from "react-router-dom";
+import { BrowserRouter, Link, NavLink, Route } from "react-router-dom";
 
-import { AppBar, createMuiTheme, Tab, Tabs, Toolbar } from "@material-ui/core";
-import { ThumbDown, ThumbUp } from "@material-ui/icons";
+import {
+  AppBar,
+  Button,
+  createMuiTheme,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Toolbar
+} from "@material-ui/core";
+import { Menu as MenuIcon, ThumbDown, ThumbUp } from "@material-ui/icons";
 import { makeStyles, ThemeProvider } from "@material-ui/styles";
-import { LocationDescriptor } from "history";
-import { RouteChildrenProps } from "react-router";
 import BillRoute from "../routes/BillRoute";
 import MembersRoute, { getMembersTitle } from "../routes/MembersRoute";
 import ScorecardRoute, {
@@ -18,6 +21,7 @@ import ScorecardRoute, {
 } from "../routes/ScorecardRoute";
 
 import agplv3Logo from "../assets/agplv3-with-text-100x42.png";
+import GithubLogo from "../assets/GitHub-Mark-Light-64px.png";
 import ApiKeyRequest from "../components/ApiKeyRequest";
 import { CookieWidget, PrivacyWidget } from "../components/PolicyWidgets";
 
@@ -28,79 +32,121 @@ const muiTheme = createMuiTheme({
 });
 
 const useStyles = makeStyles(theme => ({
-  bodyText: theme.typography.body1,
-  link: {
-    color: "#fff",
-    textDecoration: "none"
+  bodyText: theme.typography.body2,
+  githubLogo: {
+    height: "2.5em",
+    "vertical-align": "middle"
+  },
+  menuItem: {
+    ...theme.typography.body2,
+    display: "block",
+    height: "100%",
+    textDecoration: "none",
+    width: "100%"
+  },
+  rightLinks: {
+    position: "absolute",
+    right: "1em"
+  },
+  titleText: {
+    ...theme.typography.h5,
+    color: "#fff"
   },
   toolbar: theme.mixins.toolbar
 }));
-
-const StyledNavLink = props => (
-  <OriginalNavLink {...props} className={useStyles().link} />
-);
-
-const NavLink = (props: {
-  to: LocationDescriptor;
-  label: React.ReactNode;
-  setTab: () => void;
-}) => {
-  function tabFn({ location }: RouteChildrenProps) {
-    const selected = location.pathname === props.to ? true : false;
-    if (selected) {
-      props.setTab();
-    }
-    return (
-      <StyledNavLink to={props.to}>
-        <Tab label={props.label} selected={selected} />
-      </StyledNavLink>
-    );
-  }
-
-  return <Route exact={true} to={props.to} children={tabFn} />;
-};
 
 const ToolbarShift = props => (
   <div {...props} className={useStyles().toolbar} />
 );
 
 function Header(): JSX.Element {
-  const [tab, setTab] = React.useState(0);
-  const prepSetTab = (n: number) => () => n === tab || setTab(n);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(!open);
   return (
     <header>
       <AppBar>
         <Toolbar>
-          <Tabs value={tab} variant="scrollable" scrollButtons="auto">
-            <NavLink setTab={prepSetTab(0)} to="/" label="Home" />
-            <NavLink
-              setTab={prepSetTab(1)}
-              to="/bills/house/116"
-              label={"House Bills (Passed)"}
-            />
-            <NavLink
-              setTab={prepSetTab(2)}
-              to="/bills/senate/116"
-              label={"Senate Bills (Passed)"}
-            />
-            <NavLink
-              setTab={prepSetTab(3)}
-              to="/members/senate/116"
-              label={getMembersTitle(116, "senate")}
-            />
-            <NavLink
-              setTab={prepSetTab(4)}
-              to="/members/house/116"
-              label={getMembersTitle(116, "house")}
-            />
-            <NavLink
-              setTab={prepSetTab(5)}
-              to="/scorecard"
-              label={SCORECARD_TITLE}
-            />
-          </Tabs>
+          <IconButton
+            color="inherit"
+            aria-label="Open drawer"
+            onClick={handleOpen}
+          >
+            <MenuIcon />
+          </IconButton>
+          <h1 className={useStyles().titleText}>Rank My Reps</h1>
+          <div className={useStyles().rightLinks}>
+            <Button
+              variant="text"
+              target="_blank"
+              href="https://github.com/Barbarrosa/rank-my-reps"
+            >
+              <img
+                className={useStyles().githubLogo}
+                src={GithubLogo}
+                alt="Rank My Reps Github Project"
+              />
+            </Button>
+            <Button
+              variant="contained"
+              size="small"
+              color="secondary"
+              target="_blank"
+              href="https://github.com/Barbarrosa/rank-my-reps/issues"
+            >
+              Issues
+            </Button>
+          </div>
         </Toolbar>
       </AppBar>
+      <Drawer
+        variant="temporary"
+        anchor="left"
+        open={open}
+        onClose={handleOpen}
+      >
+        <List>
+          {[
+            {
+              name: "Home",
+              to: "/"
+            },
+            {
+              name: "House Bills (Passed)",
+              to: "/bills/house/116"
+            },
+            {
+              name: "Senate Bills (Passed)",
+              to: "/bills/senate/116"
+            },
+            {
+              name: getMembersTitle(116, "house"),
+              to: "/members/house/116"
+            },
+            {
+              name: getMembersTitle(116, "senate"),
+              to: "/members/senate/116"
+            },
+            {
+              name: SCORECARD_TITLE,
+              to: "/scorecard"
+            }
+          ].map(item => {
+            return (
+              <ListItem key={item.to}>
+                <ListItemText>
+                  <NavLink
+                    to={item.to}
+                    className={useStyles().menuItem}
+                    onClick={handleOpen}
+                  >
+                    {item.name}
+                  </NavLink>
+                </ListItemText>
+              </ListItem>
+            );
+          })}
+        </List>
+      </Drawer>
     </header>
   );
 }
