@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Route, RouteProps } from "react-router";
-import AdaptedMaterialTable from "../components/adapters/AdaptedMaterialTable";
 import { BillVote } from "../fn/Bill";
 import { getRollCallVote, getSpecificBill } from "../fn/cachedApi";
 import { Chamber } from "../fn/Chamber";
@@ -12,6 +11,7 @@ import { getUserId } from "../fn/User";
 import getMemberState from "../state/MemberState";
 import getScoreState from "../state/ScoreState";
 import Nth from "../util/Nth";
+import ProPublicaDataTable from "../components/tables/ProPublicaDataTable";
 
 export const TITLE = "Congress Members";
 type Position<T extends RollCallVote> = T extends { positions: Array<infer P> }
@@ -150,7 +150,7 @@ const getRouteComponent = ({ match }) => {
   }, [loading, scoresLoading, votesLoading, chamber, congress, votes, members]);
 
   return (
-    <AdaptedMaterialTable
+    <ProPublicaDataTable
       title={getMembersTitle(congress, chamber)}
       data={joined}
       isLoading={loading || scoresLoading || votesLoading || joinedLoading}
@@ -158,17 +158,17 @@ const getRouteComponent = ({ match }) => {
         { field: "member.full_name", title: "Name" },
         { field: "position.good", title: "Votes you Support" },
         { field: "position.bad", title: "Votes you Oppose" },
-        { title: "% Votes w/ Party", field: "member.votes_with_party_pct" },
+        {
+          title: "% Votes w/ Party",
+          field: "member.votes_with_party_pct",
+          type: "numeric"
+        },
         { field: "member.party", title: "Party" },
         { field: "member.state", title: "State" },
         {
-          customSort: (row1: MemberAndPosition, row2: MemberAndPosition) => {
-            return (
-              Number(row2.member.seniority) - Number(row1.member.seniority)
-            );
-          },
           field: "member.seniority",
-          title: "Years in Office"
+          title: "Years in Office",
+          type: "numeric"
         }
       ]}
     />

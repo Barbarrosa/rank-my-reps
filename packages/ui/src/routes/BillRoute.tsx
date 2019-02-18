@@ -3,14 +3,13 @@ import { makeStyles } from "@material-ui/styles";
 import * as React from "react";
 import { Route, RouteProps } from "react-router";
 import LeftJoin from "ts-left-join";
-import AdaptedMaterialTable from "../components/adapters/AdaptedMaterialTable";
 import { Bill } from "../fn/Bill";
-import CongressChamber from "../fn/CongressChamber";
 import { Score, updateScore } from "../fn/scorecard";
 import { getUserId } from "../fn/User";
 import getBillState from "../state/BillState";
 import getScoreState from "../state/ScoreState";
 import Nth from "../util/Nth";
+import ProPublicaDataTable from "../components/tables/ProPublicaDataTable";
 
 interface ScoredBill {
   bill: Bill;
@@ -57,7 +56,7 @@ const getRouteComponent = ({ match }) => {
   }, [bills, scores]);
 
   return (
-    <AdaptedMaterialTable
+    <ProPublicaDataTable
       title={`Recent Bills - ${Nth(congress)} ${chamber
         .charAt(0)
         .toUpperCase()}${chamber.slice(1)}`}
