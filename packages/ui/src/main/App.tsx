@@ -176,13 +176,10 @@ function Main(): JSX.Element {
           for bills you don't like.
         </li>
         <li>
-          Navigate to the <Link to="/members/senate/116">Senate</Link> or{" "}
-          <Link to="/members/house/116">House</Link> tabs.
+          Navigate to <Link to="/members/senate/116">116th Senate</Link> or{" "}
+          <Link to="/members/house/116">116th House</Link>.
         </li>
-        <li>
-          Sort the list by clicking on the "Votes you Support" or "Votes you
-          Oppose" columns.
-        </li>
+        <li>Sort the list by clicking on the "Score" column.</li>
       </ol>
       <p>
         Now you know which reps vote like you! Here are some suggestions about
