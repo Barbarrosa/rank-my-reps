@@ -16,8 +16,16 @@ import * as React from "react";
 import { Optional } from "../../util/Optional";
 import { Replace } from "../../util/Replace";
 
+type OptionalIcons = Optional<Icons, keyof Icons>;
 type AdaptedMaterialTable = React.ComponentType<
-  Optional<Replace<MaterialTableProps, "data", any[]>, "data">
+  Optional<
+    Replace<
+      Optional<Replace<MaterialTableProps, "data", any[]>, "data">,
+      "icons",
+      OptionalIcons
+    >,
+    "icons"
+  >
 >;
 
 const getFilterFn = (fieldName: string) => {
@@ -53,7 +61,10 @@ const IconMaterialTable = (props: MaterialTableProps) => {
     Search,
     ThirdStateCheck,
     ViewColumn
-  }).reduce((a, [key, Value]) => ((a[key] = () => <Value />), a), {}) as Icons;
+  }).reduce(
+    (a, [key, Value]) => ((a[key] = iconProps => <Value {...iconProps} />), a),
+    {}
+  ) as Icons;
 
   // Make nested fields searchable
   const columns: typeof props.columns = [];
@@ -70,10 +81,19 @@ const IconMaterialTable = (props: MaterialTableProps) => {
   return (
     <React.Fragment>
       <MaterialTable
-        icons={icons}
         data={[]}
-        options={{ filtering: true, search: false }}
         {...newProps}
+        icons={{
+          ...icons,
+          ...(newProps.icons || {})
+        }}
+        options={{
+          doubleHorizontalScroll: true,
+          emptyRowsWhenPaging: false,
+          filtering: true,
+          search: false,
+          ...(newProps.options || {})
+        }}
       />
       <div>
         <p>

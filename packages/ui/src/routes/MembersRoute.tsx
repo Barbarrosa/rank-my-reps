@@ -18,7 +18,7 @@ type Position<T extends RollCallVote> = T extends { positions: Array<infer P> }
   ? P
   : never;
 interface MemberAndPosition {
-  member: CongressMember;
+  member: CongressMember & { full_name?: string };
   position: { good: number; bad: number };
 }
 function getBillSession(date: string) {
@@ -122,7 +122,21 @@ const getRouteComponent = ({ match }) => {
         );
 
         tmpJoined.push({
-          member,
+          member: {
+            ...member,
+            get full_name() {
+              const {
+                short_title,
+                first_name,
+                middle_name,
+                last_name,
+                suffix
+              } = member;
+              return [short_title, first_name, middle_name, last_name, suffix]
+                .filter(e => e)
+                .join(" ");
+            }
+          },
           position: {
             bad: getVotes(memberVotes, scores.original, false),
             good: getVotes(memberVotes, scores.original, true)
@@ -141,22 +155,7 @@ const getRouteComponent = ({ match }) => {
       data={joined}
       isLoading={loading || scoresLoading || votesLoading || joinedLoading}
       columns={[
-        {
-          field: "member.first_name",
-          render: (item: MemberAndPosition) => {
-            const {
-              short_title,
-              first_name,
-              middle_name,
-              last_name,
-              suffix
-            } = item.member;
-            return [short_title, first_name, middle_name, last_name, suffix]
-              .filter(e => e)
-              .join(" ");
-          },
-          title: "Name"
-        },
+        { field: "member.full_name", title: "Name" },
         { field: "position.good", title: "Votes you Support" },
         { field: "position.bad", title: "Votes you Oppose" },
         { title: "% Votes w/ Party", field: "member.votes_with_party_pct" },

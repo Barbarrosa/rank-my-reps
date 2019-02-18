@@ -3,7 +3,6 @@ import {
   isObject as isObjectOriginal,
   isString as isStringOriginal
 } from "lodash";
-import InstrumentTypeGuard from "../util/InstrumentTypeGuard";
 import TypeGuardResult from "../util/TypeGuardResult";
 import { Chamber, isChamber as isChamberOriginal } from "./Chamber";
 import { isArrayOfType } from "./isArrayOfType";

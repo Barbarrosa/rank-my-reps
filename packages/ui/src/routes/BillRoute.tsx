@@ -65,21 +65,11 @@ const getRouteComponent = ({ match }) => {
       data={joined}
       columns={[
         {
-          field: "bill.number",
-          render: (row: ScoredBill) => {
+          customFilterAndSearch: (filter, row: ScoredBill) => {
             return (
-              <a target="_blank" href={row.bill.congressdotgov_url}>
-                {row.bill.number}
-              </a>
+              (filter === "checked") === (row.score ? row.score.support : null)
             );
           },
-          title: "#"
-        },
-        {
-          field: "bill.short_title",
-          title: "Title"
-        },
-        {
           customSort: (row1: ScoredBill, row2: ScoredBill) => {
             const support1 = row1.score ? row1.score.support : null;
             const support2 = row2.score ? row2.score.support : null;
@@ -132,7 +122,23 @@ const getRouteComponent = ({ match }) => {
               </span>
             );
           },
-          title: "Preference"
+          title: "Preference",
+          type: "boolean"
+        },
+        {
+          field: "bill.number",
+          render: (row: ScoredBill) => {
+            return (
+              <a target="_blank" href={row.bill.congressdotgov_url}>
+                {row.bill.number}
+              </a>
+            );
+          },
+          title: "#"
+        },
+        {
+          field: "bill.short_title",
+          title: "Title"
         }
       ]}
     />

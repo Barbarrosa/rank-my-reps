@@ -49,7 +49,8 @@ const getRouteComponent = () => {
               );
             }
           },
-          title: "Support"
+          title: "Support",
+          type: "boolean"
         }
       ]}
     />
