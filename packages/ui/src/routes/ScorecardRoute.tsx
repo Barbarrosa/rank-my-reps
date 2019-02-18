@@ -17,22 +17,6 @@ const getRouteComponent = () => {
       isLoading={loading}
       columns={[
         {
-          field: "bill.number",
-          render: (row: Score) => {
-            return (
-              <a target="_blank" href={row.bill.congressdotgov_url}>
-                {row.bill.number}
-              </a>
-            );
-          },
-          title: "#"
-        },
-        {
-          field: "bill.short_title",
-          title: "Title"
-        },
-        { title: "Priority", field: "priority" },
-        {
           field: "support",
           render: (data: Score) => {
             if (data.support) {
@@ -51,7 +35,23 @@ const getRouteComponent = () => {
           },
           title: "Support",
           type: "boolean"
-        }
+        },
+        {
+          field: "bill.number",
+          render: (row: Score) => {
+            return (
+              <a target="_blank" href={row.bill.congressdotgov_url}>
+                {row.bill.number}
+              </a>
+            );
+          },
+          title: "#"
+        },
+        {
+          field: "bill.short_title",
+          title: "Title"
+        },
+        { title: "Priority", field: "priority" }
       ]}
     />
   );
