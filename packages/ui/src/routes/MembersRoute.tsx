@@ -16,6 +16,7 @@ import getScoreState from "../state/ScoreState";
 import Nth from "../util/Nth";
 import ProPublicaDataTable from "../components/tables/ProPublicaDataTable";
 import AdaptedMaterialTable from "../components/adapters/AdaptedMaterialTable";
+import { makeStyles } from "@material-ui/styles";
 
 export const TITLE = "Congress Members";
 type Position<T extends RollCallVote> = T extends { positions: Array<infer P> }
@@ -25,8 +26,9 @@ type RollCallPositionWithBill = RollCallPosition & { bill: Bill };
 interface MemberAndPosition {
   member: CongressMember & { full_name?: string };
   position: {
-    good: RollCallPositionWithBill[];
+    score: number;
     bad: RollCallPositionWithBill[];
+    good: RollCallPositionWithBill[];
   };
 }
 function getBillSession(date: string) {
@@ -61,6 +63,16 @@ function getVotes(
     [] as RollCallPositionWithBill[]
   );
 }
+
+const useStyles = makeStyles(theme => ({
+  goodVote: {
+    color: "green"
+  },
+  badVote: {
+    color: "red"
+  }
+}));
+
 const getRouteComponent = ({ match }) => {
   const { chamber, congress }: CongressChamber = match.params;
   const { members, loading } = getMemberState(chamber, congress);
@@ -135,6 +147,9 @@ const getRouteComponent = ({ match }) => {
           {}
         );
 
+        const bad = getVotes(memberVotes, scores.original, false);
+        const good = getVotes(memberVotes, scores.original, true);
+
         tmpJoined.push({
           member: {
             ...member,
@@ -152,8 +167,15 @@ const getRouteComponent = ({ match }) => {
             }
           },
           position: {
-            bad: getVotes(memberVotes, scores.original, false),
-            good: getVotes(memberVotes, scores.original, true)
+            get score() {
+              return good.length - bad.length;
+            },
+            get good() {
+              return good;
+            },
+            get bad() {
+              return bad;
+            }
           }
         });
       }
@@ -162,6 +184,8 @@ const getRouteComponent = ({ match }) => {
       setJoinedLoading(false);
     }
   }, [loading, scoresLoading, votesLoading, chamber, congress, votes, members]);
+
+  const { goodVote, badVote } = useStyles();
 
   return (
     <ProPublicaDataTable
@@ -193,8 +217,24 @@ const getRouteComponent = ({ match }) => {
       isLoading={loading || scoresLoading || votesLoading || joinedLoading}
       columns={[
         { field: "member.full_name", title: "Name" },
-        { field: "position.good.length", title: "Votes you Support" },
-        { field: "position.bad.length", title: "Votes you Oppose" },
+        {
+          field: "position.score",
+          render: (row: MemberAndPosition) => {
+            const {
+              position: {
+                good: { length: good },
+                bad: { length: bad }
+              }
+            } = row;
+
+            return [
+              good ? <span className={good ? goodVote : ""}>+{good}</span> : 0,
+              <React.Fragment>&nbsp;/&nbsp;</React.Fragment>,
+              bad ? <span className={bad ? badVote : ""}>-{bad}</span> : 0
+            ];
+          },
+          title: "Score"
+        },
         {
           title: "% Votes w/ Party",
           field: "member.votes_with_party_pct",
