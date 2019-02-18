@@ -1,25 +1,33 @@
 import * as React from "react";
 import { Route, RouteProps } from "react-router";
-import { BillVote } from "../fn/Bill";
+import { BillVote, Bill } from "../fn/Bill";
 import { getRollCallVote, getSpecificBill } from "../fn/cachedApi";
 import { Chamber } from "../fn/Chamber";
 import CongressChamber from "../fn/CongressChamber";
 import { CongressMember } from "../fn/CongressMember";
-import RollCallVote, { voteMatchesPosition } from "../fn/RollCallVote";
+import RollCallVote, {
+  voteMatchesPosition,
+  RollCallPosition
+} from "../fn/RollCallVote";
 import { Score, ScoreCard } from "../fn/scorecard";
 import { getUserId } from "../fn/User";
 import getMemberState from "../state/MemberState";
 import getScoreState from "../state/ScoreState";
 import Nth from "../util/Nth";
 import ProPublicaDataTable from "../components/tables/ProPublicaDataTable";
+import AdaptedMaterialTable from "../components/adapters/AdaptedMaterialTable";
 
 export const TITLE = "Congress Members";
 type Position<T extends RollCallVote> = T extends { positions: Array<infer P> }
   ? P
   : never;
+type RollCallPositionWithBill = RollCallPosition & { bill: Bill };
 interface MemberAndPosition {
   member: CongressMember & { full_name?: string };
-  position: { good: number; bad: number };
+  position: {
+    good: RollCallPositionWithBill[];
+    bad: RollCallPositionWithBill[];
+  };
 }
 function getBillSession(date: string) {
   if (new Date(Date.parse(date)).getFullYear() % 2 === 0) {
@@ -35,17 +43,23 @@ function getVotes(
   votes: MemberVotes,
   scores: ScoreCard | undefined,
   good: boolean
-): number {
+): RollCallPositionWithBill[] {
   if (!scores) {
-    return 0;
+    return [];
   }
-  return Object.entries(votes).filter(([key, value]) => {
-    return (
-      scores[key] &&
-      value &&
-      voteMatchesPosition(value.vote_position, good && scores[key].support)
-    );
-  }).length;
+  return Object.entries(votes).reduce(
+    (agg, [key, value]) => {
+      if (
+        scores[key] &&
+        value &&
+        voteMatchesPosition(value.vote_position, good && scores[key].support)
+      ) {
+        agg.push({ ...value, bill: scores[key].bill });
+      }
+      return agg;
+    },
+    [] as RollCallPositionWithBill[]
+  );
 }
 const getRouteComponent = ({ match }) => {
   const { chamber, congress }: CongressChamber = match.params;
@@ -153,11 +167,34 @@ const getRouteComponent = ({ match }) => {
     <ProPublicaDataTable
       title={getMembersTitle(congress, chamber)}
       data={joined}
+      detailPanel={(row: MemberAndPosition) => {
+        return (
+          <AdaptedMaterialTable
+            columns={[
+              {
+                field: "bill.number",
+                render: (row: RollCallPositionWithBill) => {
+                  return (
+                    <a target="_blank" href={row.bill.congressdotgov_url}>
+                      {row.bill.number}
+                    </a>
+                  );
+                },
+                title: "#"
+              },
+              { field: "bill.short_title", title: "Name" },
+              { field: "vote_position", title: "Position" }
+            ]}
+            data={row.position.good.concat(row.position.bad)}
+            title={`Score Breakdown for ${row.member.full_name}`}
+          />
+        );
+      }}
       isLoading={loading || scoresLoading || votesLoading || joinedLoading}
       columns={[
         { field: "member.full_name", title: "Name" },
-        { field: "position.good", title: "Votes you Support" },
-        { field: "position.bad", title: "Votes you Oppose" },
+        { field: "position.good.length", title: "Votes you Support" },
+        { field: "position.bad.length", title: "Votes you Oppose" },
         {
           title: "% Votes w/ Party",
           field: "member.votes_with_party_pct",
