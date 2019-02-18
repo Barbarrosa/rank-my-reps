@@ -136,6 +136,10 @@ const getRouteComponent = ({ match }) => {
           title: "#"
         },
         {
+          field: "bill.primary_subject",
+          title: "Primary Subject"
+        },
+        {
           field: "bill.short_title",
           title: "Title"
         }
