@@ -1,5 +1,5 @@
 import { isString } from "util";
-import { Bill } from "./Bill";
+import { Bill, isBill } from "./Bill";
 import { hasKeyValueTypes } from "./hasKeyValueTypes";
 import { cacheGet, cacheSet, cacheSubscribe } from "./localStorageCache";
 
@@ -17,7 +17,8 @@ function isScore(data: any): data is Score {
   return (
     typeof data === "object" &&
     typeof data.priority === "number" &&
-    typeof data.support === "boolean"
+    typeof data.support === "boolean" &&
+    isBill(data.bill)
   );
 }
 
