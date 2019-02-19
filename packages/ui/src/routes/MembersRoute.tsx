@@ -199,10 +199,9 @@ const getRouteComponent = ({ match }) => {
 
   // Control loading indicator
   React.useEffect(() => {
-    if (loading || scoresLoading || votesLoading || trustLevelsLoading) {
-      return;
-    }
-    setJoinedLoading(false);
+    setJoinedLoading(
+      loading || scoresLoading || votesLoading || trustLevelsLoading
+    );
   }, [loading, scoresLoading, trustLevelsLoading, votesLoading]);
 
   const { goodVote, badVote, trustButton } = useStyles();

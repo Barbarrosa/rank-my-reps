@@ -4,12 +4,14 @@ import { CongressMember, isCongressMember } from "./CongressMember";
 import { isArrayOfType } from "./isArrayOfType";
 import { cacheGet } from "./localStorageCache";
 import { isRollCallVote } from "./RollCallVote";
+import { isMemberCompare } from "./MemberCompare";
 
 enum STORAGE_KEYS {
   getMembers = "FactBasedVote_getMembers",
   getRecentBills = "FactBasedVote_getRecentBills",
   getRollCallVote = "FactBasedVote_getRollCallVote",
-  getSpecificBill = "FactBasedVote_getSpecificBill"
+  getSpecificBill = "FactBasedVote_getSpecificBill",
+  getMemberComparison = "FactBasedVote_getMemberComparison"
 }
 
 export const getMembers = cacheGet(
@@ -34,4 +36,10 @@ export const getSpecificBill = cacheGet(
   STORAGE_KEYS.getSpecificBill,
   isSpecificBill,
   api.getSpecificBill
+);
+
+export const getMemberComparison = cacheGet(
+  STORAGE_KEYS.getMemberComparison,
+  isMemberCompare,
+  api.getMemberComparison
 );

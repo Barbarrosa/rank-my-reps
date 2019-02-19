@@ -10,11 +10,13 @@ import {
   isCongressApiMemberResult,
   isCongressApiResponse,
   isCongressApiRollCallVoteResult,
-  isCongressApiSpecificBillResult
+  isCongressApiSpecificBillResult,
+  isCongressApiMemberCompareResult
 } from "./CongressApiResponse";
 import { CongressMember } from "./CongressMember";
 import { isArrayOfType } from "./isArrayOfType";
 import RollCallVote from "./RollCallVote";
+import MemberCompare from "./MemberCompare";
 
 let apiKeyResolve: (key: string) => void;
 let apiKeyRequestMethod: () => Promise<string>;
@@ -150,5 +152,21 @@ export async function getSpecificBill(
   return (await get(
     `/${congress}/bills/${id}.json`,
     isCongressApiSpecificBillResult
+  )).results[0];
+}
+
+/**
+ * https://projects.propublica.org/api-docs/congress-api/members/#compare-two-members-vote-positions
+ */
+export async function getMemberComparison(
+  congress: number,
+  chamber: Chamber,
+  firstMemberId: string,
+  secondMemberId: string
+): Promise<MemberCompare> {
+  validateCongress(congress);
+  return (await get(
+    `/members/${firstMemberId}/votes/${secondMemberId}/${congress}/${chamber}.json`,
+    isCongressApiMemberCompareResult
   )).results[0];
 }

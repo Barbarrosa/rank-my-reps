@@ -4,6 +4,7 @@ import { Chamber, isChamber } from "./Chamber";
 import { CongressMember, isCongressMember } from "./CongressMember";
 import { isArrayOfType } from "./isArrayOfType";
 import RollCallVote, { isRollCallVote } from "./RollCallVote";
+import MemberCompare, { isMemberCompare } from "./MemberCompare";
 
 export interface CongressApiResponse<T> {
   status: "OK";
@@ -122,4 +123,10 @@ export function isCongressApiSpecificBillResult(
   data: any
 ): data is [SpecificBill] {
   return Array.isArray(data) && data.length === 1 && isSpecificBill(data[0]);
+}
+
+export function isCongressApiMemberCompareResult(
+  data: any
+): data is [MemberCompare] {
+  return Array.isArray(data) && data.length === 1 && isMemberCompare(data[0]);
 }
