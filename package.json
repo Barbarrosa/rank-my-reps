@@ -30,6 +30,7 @@
   },
   "scripts": {
     "ui:dev": "lerna run start --scope=*/ui",
+    "ui:build": "lerna run build:prod --scope=*/ui", 
     "ui:deploy": "lerna run sync-ui --scope=*/infrastructure"
   }
 }
