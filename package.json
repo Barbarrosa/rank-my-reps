@@ -27,5 +27,9 @@
     "lerna": "^3.10.7",
     "lint-staged": "^8.1.1",
     "prettier": "1.16.1"
+  },
+  "scripts": {
+    "ui:dev": "lerna run start --scope=*/ui",
+    "ui:deploy": "lerna run sync-ui --scope=*/infrastructure"
   }
 }
