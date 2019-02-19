@@ -41,5 +41,6 @@ export const getSpecificBill = cacheGet(
 export const getMemberComparison = cacheGet(
   STORAGE_KEYS.getMemberComparison,
   isMemberCompare,
-  api.getMemberComparison
+  api.getMemberComparison,
+  9000 // 15 minutes
 );

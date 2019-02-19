@@ -146,7 +146,8 @@ type OrigFn<P extends any[], R> = (...args: P) => Promise<R>;
 export function cacheGet<P extends any[], R>(
   prefix: string,
   validFn: Validator<R>,
-  fn: OrigFn<P, R>
+  fn: OrigFn<P, R>,
+  expirySeconds: number = 3000
 ): OrigFn<P, R> {
   return async (...args: P): Promise<R> => {
     const key = `${prefix}:${args.join(":")}`;
@@ -155,7 +156,7 @@ export function cacheGet<P extends any[], R>(
       return cacheResult.value;
     }
     const value = await fn(...args);
-    await storeValue({ key, value });
+    await storeValue({ key, value, expirySeconds });
     return value;
   };
 }

@@ -1,7 +1,11 @@
 import * as React from "react";
 import { Route, RouteProps } from "react-router";
 import { BillVote, Bill } from "../fn/Bill";
-import { getRollCallVote, getSpecificBill } from "../fn/cachedApi";
+import {
+  getRollCallVote,
+  getSpecificBill,
+  getMemberComparison
+} from "../fn/cachedApi";
 import { Chamber } from "../fn/Chamber";
 import CongressChamber from "../fn/CongressChamber";
 import { CongressMember } from "../fn/CongressMember";
@@ -18,10 +22,9 @@ import ProPublicaDataTable from "../components/tables/ProPublicaDataTable";
 import AdaptedMaterialTable from "../components/adapters/AdaptedMaterialTable";
 import { makeStyles } from "@material-ui/styles";
 import getTrustLevelState from "../state/TrustLevelState";
-import { TextField, Input, Button } from "@material-ui/core";
+import { Button, Tooltip } from "@material-ui/core";
 import { setMemberTrustLevel } from "../fn/MemberTrustLevel";
-import { debounce } from "lodash";
-import { Optional } from "../util/Optional";
+import MemberCompare from "../fn/MemberCompare";
 
 export const TITLE = "Congress Members";
 type Position<T extends RollCallVote> = T extends { positions: Array<infer P> }
@@ -34,6 +37,8 @@ interface MemberAndPosition {
     score: number;
     bad: RollCallPositionWithBill[];
     good: RollCallPositionWithBill[];
+    cmpBad: number;
+    cmpGood: number;
     votes: RollCallPositionWithBill[];
   };
 }
@@ -153,6 +158,63 @@ const getRouteComponent = ({ match }) => {
     );
   };
 
+  const [comparisons, setComparisons] = React.useState({} as {
+    [K: string]: MemberCompare[];
+  });
+  const [comparisonsLoading, setComparisonsLoading] = React.useState(true);
+
+  function getScoreFromComparisons({ id }: CongressMember) {
+    const matching = comparisons[id] || [];
+    if (matching.length < 1 || typeof matching.reduce !== "function") {
+      return {
+        good: 0,
+        bad: 0
+      };
+    }
+    const { good, bad, total } = matching.reduce(
+      (result, compare) => {
+        const good = result.good + Number(compare.common_votes);
+        const bad = result.bad + Number(compare.disagree_votes);
+        return {
+          good,
+          bad,
+          total: result.total + good + bad
+        };
+      },
+      { good: 0, bad: 0, total: 0 }
+    );
+
+    return {
+      good: Math.floor((good / total) * (total / matching.length)),
+      bad: Math.floor((bad / total) * (total / matching.length))
+    };
+  }
+
+  React.useEffect(() => {
+    (async () => {
+      setComparisonsLoading(true);
+      try {
+        const newComparisons = {};
+        for (const id in trustLevels) {
+          for (const member of members) {
+            const res = await getMemberComparison(
+              congress,
+              chamber,
+              id,
+              member.id
+            );
+            (newComparisons[member.id] = newComparisons[member.id] || []).push(
+              res
+            );
+          }
+        }
+        setComparisons(newComparisons);
+      } finally {
+        setComparisonsLoading(false);
+      }
+    })();
+  }, [congress, chamber, members, trustLevels]);
+
   // Populate row data
   React.useEffect(() => {
     const tmpJoined: MemberAndPosition[] = [];
@@ -162,6 +224,8 @@ const getRouteComponent = ({ match }) => {
 
       const good = getVotes(getMemberVotes(member), scores.original, true);
       const bad = getVotes(getMemberVotes(member), scores.original, false);
+
+      const { good: cmpGood, bad: cmpBad } = getScoreFromComparisons(member);
 
       tmpJoined.push({
         ...existing,
@@ -187,7 +251,9 @@ const getRouteComponent = ({ match }) => {
           }
         },
         position: {
-          score: good.length - bad.length,
+          score: good.length - bad.length + (cmpGood - cmpBad),
+          cmpGood,
+          cmpBad,
           good,
           bad,
           votes: good.concat(bad)
@@ -195,14 +261,24 @@ const getRouteComponent = ({ match }) => {
       });
     }
     setJoined(tmpJoined);
-  }, [members, votes, trustLevels]);
+  }, [members, votes, trustLevels, comparisons]);
 
   // Control loading indicator
   React.useEffect(() => {
     setJoinedLoading(
-      loading || scoresLoading || votesLoading || trustLevelsLoading
+      loading ||
+        scoresLoading ||
+        votesLoading ||
+        trustLevelsLoading ||
+        comparisonsLoading
     );
-  }, [loading, scoresLoading, trustLevelsLoading, votesLoading]);
+  }, [
+    loading,
+    scoresLoading,
+    trustLevelsLoading,
+    votesLoading,
+    comparisonsLoading
+  ]);
 
   const { goodVote, badVote, trustButton } = useStyles();
 
@@ -240,25 +316,46 @@ const getRouteComponent = ({ match }) => {
           field: "position.score",
           render: (row: MemberAndPosition) => {
             const {
-              position: { good: { length: good }, bad: { length: bad } } = {
+              position: {
+                good: { length: good },
+                bad: { length: bad },
+                cmpGood,
+                cmpBad,
+                score
+              } = {
                 good: [],
-                bad: []
+                bad: [],
+                cmpGood: 0,
+                cmpBad: 0,
+                score: 0
               }
             } = row;
 
             return (
-              <React.Fragment>
-                {good ? (
-                  <span className={good ? goodVote : ""}>+{good}</span>
-                ) : (
-                  0
-                )}
-                <React.Fragment>&nbsp;/&nbsp;</React.Fragment>
-                {bad ? <span className={bad ? badVote : ""}>-{bad}</span> : 0}
-              </React.Fragment>
+              <Tooltip title="Support(You + Trusted Rep) - Oppose(You + Trusted Rep) = Total Score">
+                <span>
+                  {good || cmpGood ? (
+                    <span className={good || cmpGood ? goodVote : ""}>
+                      ({good}+{cmpGood})
+                    </span>
+                  ) : (
+                    0
+                  )}
+                  <React.Fragment>&nbsp;-&nbsp;</React.Fragment>
+                  {bad || cmpBad ? (
+                    <span className={bad || cmpBad ? badVote : ""}>
+                      ({bad}+{cmpBad})
+                    </span>
+                  ) : (
+                    0
+                  )}
+                  <React.Fragment>&nbsp;=&nbsp;{score}</React.Fragment>
+                </span>
+              </Tooltip>
             );
           },
-          title: "Score"
+          title: "Score",
+          type: "numeric"
         },
         {
           field: "member.trust_level",

@@ -7,19 +7,19 @@ export default interface MemberCompare {
   second_member_api_uri: string;
   congress: string;
   chamber: Chamber;
-  common_votes: string;
-  disagree_votes: string;
-  agree_percent: string;
-  disagree_percent: string;
+  common_votes: number;
+  disagree_votes: number;
+  agree_percent: number;
+  disagree_percent: number;
 }
 
 export function isMemberCompare(data: any): data is MemberCompare {
   return (
     typeof data === "object" &&
-    typeof data.disagree_percent === "string" &&
-    typeof data.agree_percent === "string" &&
-    typeof data.disagree_votes === "string" &&
-    typeof data.common_votes === "string" &&
+    typeof data.disagree_percent === "number" &&
+    typeof data.agree_percent === "number" &&
+    typeof data.disagree_votes === "number" &&
+    typeof data.common_votes === "number" &&
     isChamber(data.chamber) &&
     typeof data.congress === "string" &&
     typeof data.second_member_api_uri === "string" &&
