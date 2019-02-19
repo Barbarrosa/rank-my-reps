@@ -9,7 +9,7 @@ import RollCallVote, {
   voteMatchesPosition,
   RollCallPosition
 } from "../fn/RollCallVote";
-import { Score, ScoreCard } from "../fn/scorecard";
+import { ScoreCard } from "../fn/scorecard";
 import { getUserId } from "../fn/User";
 import getMemberState from "../state/MemberState";
 import getScoreState from "../state/ScoreState";
@@ -17,6 +17,11 @@ import Nth from "../util/Nth";
 import ProPublicaDataTable from "../components/tables/ProPublicaDataTable";
 import AdaptedMaterialTable from "../components/adapters/AdaptedMaterialTable";
 import { makeStyles } from "@material-ui/styles";
+import getTrustLevelState from "../state/TrustLevelState";
+import { TextField, Input, Button } from "@material-ui/core";
+import { setMemberTrustLevel } from "../fn/MemberTrustLevel";
+import { debounce } from "lodash";
+import { Optional } from "../util/Optional";
 
 export const TITLE = "Congress Members";
 type Position<T extends RollCallVote> = T extends { positions: Array<infer P> }
@@ -24,11 +29,12 @@ type Position<T extends RollCallVote> = T extends { positions: Array<infer P> }
   : never;
 type RollCallPositionWithBill = RollCallPosition & { bill: Bill };
 interface MemberAndPosition {
-  member: CongressMember & { full_name?: string };
-  position: {
+  member: CongressMember & { full_name?: string; trust_level?: number };
+  position?: {
     score: number;
     bad: RollCallPositionWithBill[];
     good: RollCallPositionWithBill[];
+    votes: RollCallPositionWithBill[];
   };
 }
 function getBillSession(date: string) {
@@ -70,6 +76,9 @@ const useStyles = makeStyles(theme => ({
   },
   badVote: {
     color: "red"
+  },
+  trustButton: {
+    width: "100%"
   }
 }));
 
@@ -77,9 +86,14 @@ const getRouteComponent = ({ match }) => {
   const { chamber, congress }: CongressChamber = match.params;
   const { members, loading } = getMemberState(chamber, congress);
 
-  const scoreState = getScoreState(getUserId());
-  const { scores } = scoreState;
-  const scoresLoading = scoreState.loading;
+  const userId = getUserId();
+
+  const scoreState = getScoreState(userId);
+  const { scores, loading: scoresLoading } = scoreState;
+
+  const { trustLevels, loading: trustLevelsLoading } = getTrustLevelState(
+    userId
+  );
 
   const lowerCaseChamber: Chamber = chamber.toLowerCase() as Chamber;
   const [votes, setVotes] = React.useState([] as RollCallVote[]);
@@ -129,63 +143,69 @@ const getRouteComponent = ({ match }) => {
 
   const [joined, setJoined] = React.useState([] as MemberAndPosition[]);
   const [joinedLoading, setJoinedLoading] = React.useState(true);
+
+  const getMemberVotes = ({ id }: CongressMember) => {
+    return votes.reduce(
+      (a, v) => (
+        (a[v.bill.bill_id] = v.positions.find(p => p.member_id === id)), a
+      ),
+      {}
+    );
+  };
+
+  // Populate row data
   React.useEffect(() => {
-    if (loading || scoresLoading || votesLoading) {
+    const tmpJoined: MemberAndPosition[] = [];
+    for (const member of members) {
+      const existing: MemberAndPosition | {} =
+        joined.find(f => f.member.id === member.id) || {};
+
+      const good = getVotes(getMemberVotes(member), scores.original, true);
+      const bad = getVotes(getMemberVotes(member), scores.original, false);
+
+      tmpJoined.push({
+        ...existing,
+        member: {
+          ...member,
+          get full_name() {
+            const {
+              short_title,
+              first_name,
+              middle_name,
+              last_name,
+              suffix
+            } = member;
+            return [short_title, first_name, middle_name, last_name, suffix]
+              .filter(e => e)
+              .join(" ");
+          },
+          get trust_level() {
+            if (member.id in trustLevels) {
+              return trustLevels[member.id].trustLevel;
+            }
+            return 0;
+          }
+        },
+        position: {
+          score: good.length - bad.length,
+          good,
+          bad,
+          votes: good.concat(bad)
+        }
+      });
+    }
+    setJoined(tmpJoined);
+  }, [members, votes, trustLevels]);
+
+  // Control loading indicator
+  React.useEffect(() => {
+    if (loading || scoresLoading || votesLoading || trustLevelsLoading) {
       return;
     }
-    setJoinedLoading(true);
-    try {
-      const tmpJoined: MemberAndPosition[] = [];
-      for (const member of members) {
-        const memberVotes: MemberVotes = votes.reduce(
-          (a, v) => (
-            (a[v.bill.bill_id] = v.positions.find(
-              p => p.member_id === member.id
-            )),
-            a
-          ),
-          {}
-        );
+    setJoinedLoading(false);
+  }, [loading, scoresLoading, trustLevelsLoading, votesLoading]);
 
-        const bad = getVotes(memberVotes, scores.original, false);
-        const good = getVotes(memberVotes, scores.original, true);
-
-        tmpJoined.push({
-          member: {
-            ...member,
-            get full_name() {
-              const {
-                short_title,
-                first_name,
-                middle_name,
-                last_name,
-                suffix
-              } = member;
-              return [short_title, first_name, middle_name, last_name, suffix]
-                .filter(e => e)
-                .join(" ");
-            }
-          },
-          position: {
-            get score() {
-              return good.length - bad.length;
-            },
-            get good() {
-              return good;
-            },
-            get bad() {
-              return bad;
-            }
-          }
-        });
-      }
-      setJoined(tmpJoined);
-    } finally {
-      setJoinedLoading(false);
-    }
-  }, [loading, scoresLoading, votesLoading, chamber, congress, votes, members]);
-
-  const { goodVote, badVote } = useStyles();
+  const { goodVote, badVote, trustButton } = useStyles();
 
   return (
     <ProPublicaDataTable
@@ -209,31 +229,74 @@ const getRouteComponent = ({ match }) => {
               { field: "bill.short_title", title: "Name" },
               { field: "vote_position", title: "Position" }
             ]}
-            data={row.position.good.concat(row.position.bad)}
+            data={row.position ? row.position.votes : []}
             title={`Score Breakdown for ${row.member.full_name}`}
           />
         );
       }}
-      isLoading={loading || scoresLoading || votesLoading || joinedLoading}
+      isLoading={joinedLoading}
       columns={[
         { field: "member.full_name", title: "Name" },
         {
           field: "position.score",
           render: (row: MemberAndPosition) => {
             const {
-              position: {
-                good: { length: good },
-                bad: { length: bad }
+              position: { good: { length: good }, bad: { length: bad } } = {
+                good: [],
+                bad: []
               }
             } = row;
 
-            return [
-              good ? <span className={good ? goodVote : ""}>+{good}</span> : 0,
-              <React.Fragment>&nbsp;/&nbsp;</React.Fragment>,
-              bad ? <span className={bad ? badVote : ""}>-{bad}</span> : 0
-            ];
+            return (
+              <React.Fragment>
+                {good ? (
+                  <span className={good ? goodVote : ""}>+{good}</span>
+                ) : (
+                  0
+                )}
+                <React.Fragment>&nbsp;/&nbsp;</React.Fragment>
+                {bad ? <span className={bad ? badVote : ""}>-{bad}</span> : 0}
+              </React.Fragment>
+            );
           },
           title: "Score"
+        },
+        {
+          field: "member.trust_level",
+          render: (row: MemberAndPosition) => {
+            const change = () => {
+              setMemberTrustLevel(userId, {
+                member: row.member,
+                trustLevel: Number(!row.member.trust_level)
+              });
+            };
+
+            if (Number(row.member.trust_level) > 0) {
+              return (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={change}
+                  className={trustButton}
+                >
+                  Trusted
+                </Button>
+              );
+            } else {
+              return (
+                <Button
+                  variant="contained"
+                  color="default"
+                  onClick={change}
+                  className={trustButton}
+                >
+                  Untrusted
+                </Button>
+              );
+            }
+          },
+          title: "Trust Level",
+          type: "numeric"
         },
         {
           title: "% Votes w/ Party",

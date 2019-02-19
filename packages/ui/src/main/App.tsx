@@ -158,29 +158,34 @@ function Main(): JSX.Element {
         Welcome to Rank My Reps! This app helps bridge the gap between elected
         officials' votes and your preferences.
       </p>
-      <p>Start by following these steps:</p>
-      <ol>
-        <li>
-          Select <Link to="/bills/house/116">House Bills (Passed)</Link> or{" "}
-          <Link to="/bills/senate/116">Senate Bills (Passed)</Link>
-        </li>
-        <li>
-          Find and click{" "}
-          <span title="support">
-            <ThumbUp />
-          </span>{" "}
-          for bills you like or{" "}
-          <span title="oppose">
-            <ThumbDown />
-          </span>{" "}
-          for bills you don't like.
-        </li>
-        <li>
-          Navigate to <Link to="/members/senate/116">116th Senate</Link> or{" "}
-          <Link to="/members/house/116">116th House</Link>.
-        </li>
-        <li>Sort the list by clicking on the "Score" column.</li>
-      </ol>
+      <p>
+        If you have a Congress member you already trust, then you can navigate
+        to <Link to="/members/senate/116">116th Senate</Link> or{" "}
+        <Link to="/members/house/116">116th House</Link> and indicate that you
+        trust them. This will use their votes to score the remaining Congress
+        members. If you trust two members who disagee, then their votes will
+        cancel out.
+      </p>
+      <p>
+        If you'd like to look at bills yourself, then select{" "}
+        <Link to="/bills/house/116">House Bills (Passed)</Link> or{" "}
+        <Link to="/bills/senate/116">Senate Bills (Passed)</Link>. Find and
+        click{" "}
+        <span title="support">
+          <ThumbUp />
+        </span>{" "}
+        for bills you like or{" "}
+        <span title="oppose">
+          <ThumbDown />
+        </span>{" "}
+        for bills you don't like.
+      </p>
+      <p>
+        Once you have your scores or trusted Congress members selected, navigate
+        to <Link to="/members/senate/116">116th Senate</Link> or{" "}
+        <Link to="/members/house/116">116th House</Link>, then sort the list by
+        clicking on the "Score" column.
+      </p>
       <p>
         Now you know which reps vote like you! Here are some suggestions about
         what to do with this info:
